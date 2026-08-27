@@ -1,0 +1,13 @@
+hr.anchored {
+    color: #402c28;
+    background-color: antiquewhite;
+    padding: 2px;
+    border-bottom: 1px solid black;
+}
+
+code.sourceCode {
+    background-color: #e8e1d8;
+    border: 1px solid black;
+    padding: 2px;
+    border-radius: 4px;
+}
