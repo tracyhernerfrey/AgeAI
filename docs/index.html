@@ -79,6 +79,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script>
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+</script>
+<script type="module">import "https://cdn.plot.ly/plotly-3.7.0.min"</script>
+
 
 
 <link rel="stylesheet" href="styles.css">
@@ -117,28 +123,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="welcome" class="level2">
 <h2 class="anchored" data-anchor-id="welcome">Welcome</h2>
-<p>This page was written in <strong>Quarto</strong> and published straight to GitHub.</p>
-<ul>
-<li>It renders to a ral web site.</li>
-<li>The source is plain text, so Git tracks every change cleanly.</li>
-</ul>
-<div id="bb29e98c" class="cell" data-execution_count="1">
+<p>This page explores a small dataset of campus café sales. I wanted to see what was selling, where sales were happening, and what patterns stood out across locations.</p>
+</section>
+<section id="load" class="level2">
+<h2 class="anchored" data-anchor-id="load">Load</h2>
+<div id="80e82d8b" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hello from a rendered code chunk!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Hello from a rendered code chunk!</code></pre>
 </div>
 </div>
 </section>
-<section id="load" class="level2">
-<h2 class="anchored" data-anchor-id="load">Load</h2>
-<div id="4cba3d65" class="cell" data-execution_count="2">
+<section id="load-1" class="level2">
+<h2 class="anchored" data-anchor-id="load-1">Load</h2>
+<div id="2620ee31" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> pd.read_csv(<span class="st">"data/campus_cafe_sales.csv"</span>)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>sales.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -206,9 +211,259 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="0b392122" class="cell" data-execution_count="3">
+<div id="a5ef319d" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>This line was produced by Python when the document was was rendered, but the code that made it is hidden</code></pre>
+</div>
+</div>
+</section>
+<section id="quick-look-at-sales" class="level2">
+<h2 class="anchored" data-anchor-id="quick-look-at-sales">Quick Look at Sales</h2>
+<p>Before diving into individual cafés, let’s take a quick look at the data and see what information is available.</p>
+<div id="8b9014d1" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sales[<span class="st">"cafe"</span>].unique()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>&lt;StringArray&gt;
+['Library Cafe', 'Union Cafe', 'Science Hall Cafe']
+Length: 3, dtype: str</code></pre>
+</div>
+</div>
+</section>
+<section id="which-café-generates-the-most-revenue" class="level2">
+<h2 class="anchored" data-anchor-id="which-café-generates-the-most-revenue">Which Café Generates the Most Revenue?</h2>
+<p>Units sold tell only part of the story. To compare the cafés more meaningfully, I calculated estimated revenue using the number of units sold and the price of each item.</p>
+<div id="bd5432e4" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sales[<span class="st">"revenue"</span>] <span class="op">=</span> sales[<span class="st">"units_sold"</span>] <span class="op">*</span> sales[<span class="st">"unit_price"</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>cafe_revenue <span class="op">=</span> sales.groupby(<span class="st">"cafe"</span>)[<span class="st">"revenue"</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>cafe_revenue.style.hide(axis<span class="op">=</span><span class="st">"index"</span>).<span class="bu">format</span>({<span class="st">"revenue"</span>: <span class="st">"$</span><span class="sc">{:,.2f}</span><span class="st">"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<style type="text/css">
+</style>
+
+<table id="T_6b615" class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th id="T_6b615_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">cafe</th>
+<th id="T_6b615_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">revenue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_6b615_row0_col0" class="data row0 col0">Library Cafe</td>
+<td id="T_6b615_row0_col1" class="data row0 col1">$3,999.75</td>
+</tr>
+<tr class="even">
+<td id="T_6b615_row1_col0" class="data row1 col0">Science Hall Cafe</td>
+<td id="T_6b615_row1_col1" class="data row1 col1">$2,296.00</td>
+</tr>
+<tr class="odd">
+<td id="T_6b615_row2_col0" class="data row2 col0">Union Cafe</td>
+<td id="T_6b615_row2_col1" class="data row2 col1">$3,234.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="efb6df61" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cafe_revenue_sorted <span class="op">=</span> cafe_revenue.sort_values(<span class="st">"revenue"</span>, ascending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.bar(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    cafe_revenue_sorted,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"revenue"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"cafe"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    orientation<span class="op">=</span><span class="st">"h"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Total Revenue by Campus Café"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cafe"</span>: <span class="st">"Campus Café"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"revenue"</span>: <span class="st">"Revenue ($)"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    text<span class="op">=</span><span class="st">"revenue"</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>fig.update_traces(</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    texttemplate<span class="op">=</span><span class="st">"$%</span><span class="sc">{text:,.2f}</span><span class="st">"</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    textposition<span class="op">=</span><span class="st">"outside"</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    xaxis_tickprefix<span class="op">=</span><span class="st">"$"</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    xaxis_tickformat<span class="op">=</span><span class="st">","</span>,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="va">None</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div style="height:525px; width:100%;">            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script>if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.7.0.min.js" integrity="sha256-jvTGqxNp8AGWEcvNLVuKr+8j5dGe9Yw51LQkmDH+IYA=" crossorigin="anonymous"></script>                <div id="f755fe76-1dd4-452a-8d40-1a79e5944711" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("f755fe76-1dd4-452a-8d40-1a79e5944711")) {                    Plotly.newPlot(                        "f755fe76-1dd4-452a-8d40-1a79e5944711",                        [{"hovertemplate":"Revenue ($)=%{text}\u003cbr\u003eCampus Caf\u00e9=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","orientation":"h","showlegend":false,"text":{"dtype":"f8","bdata":"AAAAAADwoUAAAAAAAESpQAAAAACAP69A"},"textposition":"outside","x":{"dtype":"f8","bdata":"AAAAAADwoUAAAAAAAESpQAAAAACAP69A"},"xaxis":"x","y":["Science Hall Cafe","Union Cafe","Library Cafe"],"yaxis":"y","type":"bar","texttemplate":"$%{text:,.2f}"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Revenue ($)"},"tickprefix":"$","tickformat":","},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{}},"legend":{"tracegroupgap":0},"title":{"text":"Total Revenue by Campus Caf\u00e9"},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('f755fe76-1dd4-452a-8d40-1a79e5944711');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+</section>
+<section id="why-is-library-cafe-ahead" class="level2">
+<h2 class="anchored" data-anchor-id="why-is-library-cafe-ahead">Why Is Library Cafe Ahead?</h2>
+<p>To understand the revenue difference, I compared the total number of units sold at each café.</p>
+<div id="70e8c1c6" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cafe_units <span class="op">=</span> sales.groupby(<span class="st">"cafe"</span>)[<span class="st">"units_sold"</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>cafe_units.style.hide(axis<span class="op">=</span><span class="st">"index"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<style type="text/css">
+</style>
+
+<table id="T_0966c" class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th id="T_0966c_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">cafe</th>
+<th id="T_0966c_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">units_sold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_0966c_row0_col0" class="data row0 col0">Library Cafe</td>
+<td id="T_0966c_row0_col1" class="data row0 col1">962</td>
+</tr>
+<tr class="even">
+<td id="T_0966c_row1_col0" class="data row1 col0">Science Hall Cafe</td>
+<td id="T_0966c_row1_col1" class="data row1 col1">551</td>
+</tr>
+<tr class="odd">
+<td id="T_0966c_row2_col0" class="data row2 col0">Union Cafe</td>
+<td id="T_0966c_row2_col1" class="data row2 col1">787</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="a7e9b25c" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cafe_price <span class="op">=</span> sales.groupby(<span class="st">"cafe"</span>)[<span class="st">"unit_price"</span>].mean().reset_index()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>cafe_price.style.hide(axis<span class="op">=</span><span class="st">"index"</span>).<span class="bu">format</span>({<span class="st">"unit_price"</span>: <span class="st">"$</span><span class="sc">{:,.2f}</span><span class="st">"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<style type="text/css">
+</style>
+
+<table id="T_1f6e1" class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th id="T_1f6e1_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">cafe</th>
+<th id="T_1f6e1_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">unit_price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_1f6e1_row0_col0" class="data row0 col0">Library Cafe</td>
+<td id="T_1f6e1_row0_col1" class="data row0 col1">$3.90</td>
+</tr>
+<tr class="even">
+<td id="T_1f6e1_row1_col0" class="data row1 col0">Science Hall Cafe</td>
+<td id="T_1f6e1_row1_col1" class="data row1 col1">$3.90</td>
+</tr>
+<tr class="odd">
+<td id="T_1f6e1_row2_col0" class="data row2 col0">Union Cafe</td>
+<td id="T_1f6e1_row2_col1" class="data row2 col1">$3.90</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What explains the difference?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Library Cafe’s revenue lead appears to be driven by sales volume. It sold 962 units, compared with 787 at Union Cafe and 551 at Science Hall Cafe, while the average unit price was $3.90 at all three locations.</p>
+</div>
+</div>
+</section>
+<section id="what-are-people-buying" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-people-buying">What Are People Buying?</h2>
+<p>Revenue tells us which location performs best, but the item-level data can show what is driving customer demand across campus.</p>
+<div id="0f12bc2b" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>item_sales <span class="op">=</span> (</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    sales.groupby(<span class="st">"item"</span>)[<span class="st">"units_sold"</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>item_sales.style.hide(axis<span class="op">=</span><span class="st">"index"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<style type="text/css">
+</style>
+
+<table id="T_b3e83" class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th id="T_b3e83_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">item</th>
+<th id="T_b3e83_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">units_sold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_b3e83_row0_col0" class="data row0 col0">Latte</td>
+<td id="T_b3e83_row0_col1" class="data row0 col1">802</td>
+</tr>
+<tr class="even">
+<td id="T_b3e83_row1_col0" class="data row1 col0">Cold Brew</td>
+<td id="T_b3e83_row1_col1" class="data row1 col1">586</td>
+</tr>
+<tr class="odd">
+<td id="T_b3e83_row2_col0" class="data row2 col0">Blueberry Muffin</td>
+<td id="T_b3e83_row2_col1" class="data row2 col1">404</td>
+</tr>
+<tr class="even">
+<td id="T_b3e83_row3_col0" class="data row3 col0">Chai Latte</td>
+<td id="T_b3e83_row3_col1" class="data row3 col1">297</td>
+</tr>
+<tr class="odd">
+<td id="T_b3e83_row4_col0" class="data row4 col0">Green Tea</td>
+<td id="T_b3e83_row4_col1" class="data row4 col1">211</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Campus Favorite ☕
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Latte was the clear campus favorite, with 802 units sold. Cold Brew came in second with 586 units, followed by Blueberry Muffins with 404.</p>
 </div>
 </div>
 </section>

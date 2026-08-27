@@ -6,10 +6,9 @@ format: html
 
 ## Welcome 
 
-This page was written in **Quarto** and published straight to GitHub.
+This page explores a small dataset of campus café sales. I wanted to see what was selling, where sales were happening, and what patterns stood out across locations.
 
-- It renders to a ral web site.
-- The source is plain text, so Git tracks every change cleanly.
+## Load
 
 ```{python}
 print("Hello from a rendered code chunk!")
@@ -41,3 +40,102 @@ print("This line was produced by Python when the document was was rendered, but 
 sales = pd.read_csv("data/campus_cafe_sales.csv")
 
 ```
+
+## Quick Look at Sales
+
+Before diving into individual cafés, let's take a quick look at the data and see what information is available.
+
+
+```{python}
+sales["cafe"].unique()
+```
+
+## Which Café Generates the Most Revenue?
+
+Units sold tell only part of the story. To compare the cafés more meaningfully, I calculated estimated revenue using the number of units sold and the price of each item.
+
+
+```{python}
+sales["revenue"] = sales["units_sold"] * sales["unit_price"]
+
+cafe_revenue = sales.groupby("cafe")["revenue"].sum().reset_index()
+
+cafe_revenue.style.hide(axis="index").format({"revenue": "${:,.2f}"})
+```
+
+
+```{python}
+cafe_revenue_sorted = cafe_revenue.sort_values("revenue", ascending=True)
+
+fig = px.bar(
+    cafe_revenue_sorted,
+    x="revenue",
+    y="cafe",
+    orientation="h",
+    title="Total Revenue by Campus Café",
+    labels={
+        "cafe": "Campus Café",
+        "revenue": "Revenue ($)"
+    },
+    text="revenue"
+)
+
+fig.update_traces(
+    texttemplate="$%{text:,.2f}",
+    textposition="outside"
+)
+
+fig.update_layout(
+    xaxis_tickprefix="$",
+    xaxis_tickformat=",",
+    yaxis_title=None
+)
+
+fig.show()
+```
+
+## Why Is Library Cafe Ahead?
+
+To understand the revenue difference, I compared the total number of units sold at each café.
+
+
+```{python}
+cafe_units = sales.groupby("cafe")["units_sold"].sum().reset_index()
+
+cafe_units.style.hide(axis="index")
+```
+
+
+```{python}
+cafe_price = sales.groupby("cafe")["unit_price"].mean().reset_index()
+
+cafe_price.style.hide(axis="index").format({"unit_price": "${:,.2f}"})
+```
+
+::: {.callout-note}
+## What explains the difference?
+
+Library Cafe's revenue lead appears to be driven by sales volume. It sold 962 units, compared with 787 at Union Cafe and 551 at Science Hall Cafe, while the average unit price was $3.90 at all three locations.
+:::
+
+## What Are People Buying?
+
+Revenue tells us which location performs best, but the item-level data can show what is driving customer demand across campus.
+
+
+```{python}
+item_sales = (
+    sales.groupby("item")["units_sold"]
+    .sum()
+    .sort_values(ascending=False)
+    .reset_index()
+)
+
+item_sales.style.hide(axis="index")
+```
+
+::: {.callout-tip}
+## Campus Favorite ☕
+
+Latte was the clear campus favorite, with 802 units sold. Cold Brew came in second with 586 units, followed by Blueberry Muffins with 404.
+:::
