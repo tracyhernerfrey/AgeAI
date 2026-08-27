@@ -1,0 +1,91 @@
+date,cafe,item,category,units_sold,unit_price
+2025-10-06,Library Cafe,Latte,Coffee,66,4.75
+2025-10-06,Library Cafe,Cold Brew,Coffee,53,4.25
+2025-10-06,Library Cafe,Chai Latte,Tea,27,4.50
+2025-10-06,Library Cafe,Green Tea,Tea,20,2.75
+2025-10-06,Library Cafe,Blueberry Muffin,Pastry,42,3.25
+2025-10-06,Union Cafe,Latte,Coffee,56,4.75
+2025-10-06,Union Cafe,Cold Brew,Coffee,40,4.25
+2025-10-06,Union Cafe,Chai Latte,Tea,12,4.50
+2025-10-06,Union Cafe,Green Tea,Tea,16,2.75
+2025-10-06,Union Cafe,Blueberry Muffin,Pastry,18,3.25
+2025-10-06,Science Hall Cafe,Latte,Coffee,40,4.75
+2025-10-06,Science Hall Cafe,Cold Brew,Coffee,30,4.25
+2025-10-06,Science Hall Cafe,Chai Latte,Tea,14,4.50
+2025-10-06,Science Hall Cafe,Green Tea,Tea,11,2.75
+2025-10-06,Science Hall Cafe,Blueberry Muffin,Pastry,18,3.25
+2025-10-07,Library Cafe,Latte,Coffee,62,4.75
+2025-10-07,Library Cafe,Cold Brew,Coffee,51,4.25
+2025-10-07,Library Cafe,Chai Latte,Tea,14,4.50
+2025-10-07,Library Cafe,Green Tea,Tea,10,2.75
+2025-10-07,Library Cafe,Blueberry Muffin,Pastry,19,3.25
+2025-10-07,Union Cafe,Latte,Coffee,45,4.75
+2025-10-07,Union Cafe,Cold Brew,Coffee,34,4.25
+2025-10-07,Union Cafe,Chai Latte,Tea,19,4.50
+2025-10-07,Union Cafe,Green Tea,Tea,15,2.75
+2025-10-07,Union Cafe,Blueberry Muffin,Pastry,27,3.25
+2025-10-07,Science Hall Cafe,Latte,Coffee,27,4.75
+2025-10-07,Science Hall Cafe,Cold Brew,Coffee,26,4.25
+2025-10-07,Science Hall Cafe,Chai Latte,Tea,17,4.50
+2025-10-07,Science Hall Cafe,Green Tea,Tea,8,2.75
+2025-10-07,Science Hall Cafe,Blueberry Muffin,Pastry,24,3.25
+2025-10-08,Library Cafe,Latte,Coffee,62,4.75
+2025-10-08,Library Cafe,Cold Brew,Coffee,37,4.25
+2025-10-08,Library Cafe,Chai Latte,Tea,26,4.50
+2025-10-08,Library Cafe,Green Tea,Tea,15,2.75
+2025-10-08,Library Cafe,Blueberry Muffin,Pastry,20,3.25
+2025-10-08,Union Cafe,Latte,Coffee,44,4.75
+2025-10-08,Union Cafe,Cold Brew,Coffee,32,4.25
+2025-10-08,Union Cafe,Chai Latte,Tea,20,4.50
+2025-10-08,Union Cafe,Green Tea,Tea,13,2.75
+2025-10-08,Union Cafe,Blueberry Muffin,Pastry,32,3.25
+2025-10-08,Science Hall Cafe,Latte,Coffee,39,4.75
+2025-10-08,Science Hall Cafe,Cold Brew,Coffee,21,4.25
+2025-10-08,Science Hall Cafe,Chai Latte,Tea,12,4.50
+2025-10-08,Science Hall Cafe,Green Tea,Tea,8,2.75
+2025-10-08,Science Hall Cafe,Blueberry Muffin,Pastry,13,3.25
+2025-10-09,Library Cafe,Latte,Coffee,51,4.75
+2025-10-09,Library Cafe,Cold Brew,Coffee,30,4.25
+2025-10-09,Library Cafe,Chai Latte,Tea,22,4.50
+2025-10-09,Library Cafe,Green Tea,Tea,13,2.75
+2025-10-09,Library Cafe,Blueberry Muffin,Pastry,33,3.25
+2025-10-09,Union Cafe,Latte,Coffee,34,4.75
+2025-10-09,Union Cafe,Cold Brew,Coffee,29,4.25
+2025-10-09,Union Cafe,Chai Latte,Tea,11,4.50
+2025-10-09,Union Cafe,Green Tea,Tea,11,2.75
+2025-10-09,Union Cafe,Blueberry Muffin,Pastry,26,3.25
+2025-10-09,Science Hall Cafe,Latte,Coffee,29,4.75
+2025-10-09,Science Hall Cafe,Cold Brew,Coffee,23,4.25
+2025-10-09,Science Hall Cafe,Chai Latte,Tea,14,4.50
+2025-10-09,Science Hall Cafe,Green Tea,Tea,6,2.75
+2025-10-09,Science Hall Cafe,Blueberry Muffin,Pastry,14,3.25
+2025-10-10,Library Cafe,Latte,Coffee,49,4.75
+2025-10-10,Library Cafe,Cold Brew,Coffee,37,4.25
+2025-10-10,Library Cafe,Chai Latte,Tea,20,4.50
+2025-10-10,Library Cafe,Green Tea,Tea,12,2.75
+2025-10-10,Library Cafe,Blueberry Muffin,Pastry,27,3.25
+2025-10-10,Union Cafe,Latte,Coffee,35,4.75
+2025-10-10,Union Cafe,Cold Brew,Coffee,23,4.25
+2025-10-10,Union Cafe,Chai Latte,Tea,8,4.50
+2025-10-10,Union Cafe,Green Tea,Tea,9,2.75
+2025-10-10,Union Cafe,Blueberry Muffin,Pastry,18,3.25
+2025-10-10,Science Hall Cafe,Latte,Coffee,20,4.75
+2025-10-10,Science Hall Cafe,Cold Brew,Coffee,21,4.25
+2025-10-10,Science Hall Cafe,Chai Latte,Tea,11,4.50
+2025-10-10,Science Hall Cafe,Green Tea,Tea,3,2.75
+2025-10-10,Science Hall Cafe,Blueberry Muffin,Pastry,12,3.25
+2025-10-13,Library Cafe,Latte,Coffee,53,4.75
+2025-10-13,Library Cafe,Cold Brew,Coffee,30,4.25
+2025-10-13,Library Cafe,Chai Latte,Tea,22,4.50
+2025-10-13,Library Cafe,Green Tea,Tea,16,2.75
+2025-10-13,Library Cafe,Blueberry Muffin,Pastry,23,3.25
+2025-10-13,Union Cafe,Latte,Coffee,58,4.75
+2025-10-13,Union Cafe,Cold Brew,Coffee,44,4.25
+2025-10-13,Union Cafe,Chai Latte,Tea,15,4.50
+2025-10-13,Union Cafe,Green Tea,Tea,16,2.75
+2025-10-13,Union Cafe,Blueberry Muffin,Pastry,27,3.25
+2025-10-13,Science Hall Cafe,Latte,Coffee,32,4.75
+2025-10-13,Science Hall Cafe,Cold Brew,Coffee,25,4.25
+2025-10-13,Science Hall Cafe,Chai Latte,Tea,13,4.50
+2025-10-13,Science Hall Cafe,Green Tea,Tea,9,2.75
+2025-10-13,Science Hall Cafe,Blueberry Muffin,Pastry,11,3.25

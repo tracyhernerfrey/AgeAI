@@ -1,0 +1,43 @@
+---
+title: "My First Quarto Site"
+author: "Tracy Frey"
+format: html
+---
+
+## Welcome 
+
+This page was written in **Quarto** and published straight to GitHub.
+
+- It renders to a ral web site.
+- The source is plain text, so Git tracks every change cleanly.
+
+```{python}
+print("Hello from a rendered code chunk!")
+```
+
+
+## Load
+```{python}
+import pandas as pd
+import plotly.express as px
+
+sales = pd.read_csv("data/campus_cafe_sales.csv")
+
+sales.head()
+```
+
+
+```{python}
+#| echo: false
+
+print("This line was produced by Python when the document was was rendered, but the code that made it is hidden")
+```
+
+
+```{python}
+#| include: false
+
+# Runs silently. Nothing appears here, but 'sales' exists for every chunk  below it
+sales = pd.read_csv("data/campus_cafe_sales.csv")
+
+```
